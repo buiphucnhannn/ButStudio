@@ -1,51 +1,72 @@
 import Link from "next/link";
-import { cn } from "@/lib/cn";
-
-const variants = {
-  primary:
-    "bg-brand-600 text-white shadow-lg shadow-brand-600/25 hover:bg-brand-500 focus-visible:outline-brand-600",
-  secondary:
-    "bg-white text-slate-900 ring-1 ring-slate-200 hover:bg-slate-50 hover:ring-slate-300 focus-visible:outline-slate-400",
-  ghost: "text-slate-700 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-slate-400",
-  white: "bg-white text-brand-700 hover:bg-brand-50 focus-visible:outline-white",
-};
-
-const sizes = {
-  sm: "h-9 px-4 text-sm",
-  md: "h-11 px-5 text-sm",
-  lg: "h-12 px-6 text-base",
-};
+import { cn } from "@/lib/utils";
+import { ArrowRight } from "@/components/ui/Icons";
 
 /**
- * Button đa năng: có `href` thì render <Link>, không thì render <button>.
+ * Nút dùng chung. variant: primary (đen) | outline | light (trên nền tối) | pill (trắng + vòng tròn mũi tên)
+ * - href: <Link>; as="button": <button>; external: <a target=_blank>
+ * - arrow: thêm mũi tên trượt khi hover
  */
 export default function Button({
+  children,
   href,
   variant = "primary",
   size = "md",
-  className,
-  children,
-  ...props
+  arrow = false,
+  className = "",
+  external = false,
+  as,
+  ...rest
 }) {
-  const classes = cn(
-    "inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-colors duration-200",
-    "focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50",
-    variants[variant],
-    sizes[size],
-    className,
+  const base =
+    "group inline-flex items-center justify-center gap-2 rounded-full font-medium tracking-wide whitespace-nowrap transition-all duration-300";
+  const sizes = {
+    sm: "px-5 py-2.5 text-[13px]",
+    md: "px-7 py-3.5 text-sm",
+    lg: "px-8 py-4 text-sm",
+  };
+  const styles = {
+    primary: "bg-ink text-white shadow-card hover:bg-graphite hover:shadow-soft",
+    outline:
+      "border border-ink/20 bg-transparent text-ink hover:border-ink hover:bg-ink hover:text-white",
+    light:
+      "border border-white/60 bg-white/15 text-white backdrop-blur-sm hover:bg-white hover:text-ink",
+    pill: "bg-white py-1.5 pl-6 pr-1.5 text-ink hover:bg-fog-100",
+  };
+  const cls = cn(base, variant !== "pill" && sizes[size], styles[variant], className);
+
+  const content = (
+    <>
+      <span className="inline-flex items-center gap-2">{children}</span>
+      {variant === "pill" ? (
+        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-ink text-white transition-transform duration-300 group-hover:translate-x-0.5">
+          <ArrowRight className="h-4 w-4" />
+        </span>
+      ) : (
+        arrow && (
+          <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+        )
+      )}
+    </>
   );
 
-  if (href) {
+  if (as === "button" || !href) {
     return (
-      <Link href={href} className={classes} {...props}>
-        {children}
-      </Link>
+      <button type="button" className={cls} {...rest}>
+        {content}
+      </button>
     );
   }
-
+  if (external) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className={cls} {...rest}>
+        {content}
+      </a>
+    );
+  }
   return (
-    <button type="button" className={classes} {...props}>
-      {children}
-    </button>
+    <Link href={href} className={cls} {...rest}>
+      {content}
+    </Link>
   );
 }

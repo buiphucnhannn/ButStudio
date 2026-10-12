@@ -1,22 +1,38 @@
-import { cn } from "@/lib/cn";
+import { cn } from "@/lib/utils";
 
 export default function SectionHeading({
   eyebrow,
   title,
-  description,
-  align = "center",
-  className,
+  desc,
+  align = "left",
+  light = false,
+  className = "",
+  size = "md",
 }) {
+  const sizes = {
+    md: "text-[2rem] sm:text-[2.6rem] lg:text-[3rem]",
+    lg: "text-[2.4rem] sm:text-[3.2rem] lg:text-[3.6rem]",
+  };
   return (
     <div className={cn("max-w-2xl", align === "center" && "mx-auto text-center", className)}>
-      {eyebrow && (
-        <p className="text-sm font-semibold tracking-wider text-brand-600 uppercase">{eyebrow}</p>
-      )}
-      <h2 className="mt-2 text-3xl font-bold tracking-tight text-balance text-slate-900 sm:text-4xl">
+      {eyebrow && <p className={cn("reveal mb-4 eyebrow", light && "text-white/70")}>{eyebrow}</p>}
+      <h2
+        className={cn("reveal h-display", sizes[size], light && "text-white")}
+        style={{ "--reveal-delay": "80ms" }}
+      >
         {title}
       </h2>
-      {description && (
-        <p className="mt-4 text-lg leading-relaxed text-pretty text-slate-600">{description}</p>
+      {desc && (
+        <p
+          className={cn(
+            "reveal mt-5 text-[15px] leading-relaxed text-ink-soft sm:text-base",
+            align !== "center" && "text-justify", // đoạn căn trái → căn đều 2 bên; căn giữa giữ nguyên
+            light && "text-white/80",
+          )}
+          style={{ "--reveal-delay": "160ms" }}
+        >
+          {desc}
+        </p>
       )}
     </div>
   );

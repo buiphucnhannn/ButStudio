@@ -1,98 +1,121 @@
-/**
- * Bộ icon SVG inline (stroke, 24x24) — không cần cài thêm thư viện.
- * Dùng: <Icon name="bolt" className="size-6" />
- */
-const paths = {
-  bolt: <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" />,
-  sparkles: (
-    <>
-      <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z" />
-      <path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15Z" />
-    </>
-  ),
-  chart: (
-    <>
-      <path d="M3 3v18h18" />
-      <path d="m7 15 4-4 3 3 5-6" />
-    </>
-  ),
-  shield: (
-    <>
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
-      <path d="m9 12 2 2 4-4" />
-    </>
-  ),
-  puzzle: (
-    <path d="M10 3a2 2 0 1 1 4 0v2h4a1 1 0 0 1 1 1v4h-2a2 2 0 1 0 0 4h2v4a1 1 0 0 1-1 1h-4v-2a2 2 0 1 0-4 0v2H6a1 1 0 0 1-1-1v-4h2a2 2 0 1 0 0-4H5V6a1 1 0 0 1 1-1h4V3Z" />
-  ),
-  globe: (
-    <>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
-    </>
-  ),
-  check: <path d="m5 12 5 5L20 7" />,
-  arrowRight: <path d="M5 12h14m-6-6 6 6-6 6" />,
-  menu: <path d="M4 6h16M4 12h16M4 18h16" />,
-  close: <path d="M6 6l12 12M18 6 6 18" />,
-  chevronDown: <path d="m6 9 6 6 6-6" />,
-  star: <path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2-5.5-2.9-5.5 2.9 1-6.2L3 9.6l6.2-.9L12 3Z" />,
-  mail: (
-    <>
-      <rect x="3" y="5" width="18" height="14" rx="2" />
-      <path d="m3 7 9 6 9-6" />
-    </>
-  ),
-  phone: (
+// Bộ icon SVG inline — không cần cài thêm thư viện.
+const base = (props) => ({
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 1.6,
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+  "aria-hidden": true,
+  ...props,
+});
+
+export const ArrowRight = ({ className = "h-5 w-5" }) => (
+  <svg {...base({ className })}>
+    <path d="M5 12h14m-6-6 6 6-6 6" />
+  </svg>
+);
+export const ArrowUp = ({ className = "h-4 w-4" }) => (
+  <svg {...base({ className })}>
+    <path d="M12 19V5M5 12l7-7 7 7" />
+  </svg>
+);
+export const Close = ({ className = "h-5 w-5" }) => (
+  <svg {...base({ className })}>
+    <path d="M6 6l12 12M18 6 6 18" />
+  </svg>
+);
+export const ChevronLeft = ({ className = "h-5 w-5" }) => (
+  <svg {...base({ className })}>
+    <path d="m15 6-6 6 6 6" />
+  </svg>
+);
+export const ChevronRight = ({ className = "h-5 w-5" }) => (
+  <svg {...base({ className })}>
+    <path d="m9 6 6 6-6 6" />
+  </svg>
+);
+export const ChevronDown = ({ className = "h-4 w-4" }) => (
+  <svg {...base({ className })}>
+    <path d="m6 9 6 6 6-6" />
+  </svg>
+);
+export const Check = ({ className = "h-4 w-4" }) => (
+  <svg {...base({ className, strokeWidth: 2 })}>
+    <path d="m5 12 5 5L20 7" />
+  </svg>
+);
+export const Phone = ({ className = "h-5 w-5" }) => (
+  <svg {...base({ className })}>
     <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" />
-  ),
-  mapPin: (
-    <>
-      <path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12Z" />
-      <circle cx="12" cy="9" r="2.5" />
-    </>
-  ),
-};
+  </svg>
+);
+export const MapPin = ({ className = "h-5 w-5" }) => (
+  <svg {...base({ className })}>
+    <path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12Z" />
+    <circle cx="12" cy="9" r="2.5" />
+  </svg>
+);
+export const Clock = ({ className = "h-5 w-5" }) => (
+  <svg {...base({ className })}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 7v5l3 2" />
+  </svg>
+);
+export const Globe = ({ className = "h-5 w-5" }) => (
+  <svg {...base({ className })}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
+  </svg>
+);
+export const Sparkle = ({ className = "h-5 w-5" }) => (
+  <svg {...base({ className })}>
+    <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z" />
+  </svg>
+);
+export const Camera = ({ className = "h-5 w-5" }) => (
+  <svg {...base({ className })}>
+    <path d="M4 8h3l2-3h6l2 3h3v11H4V8Z" />
+    <circle cx="12" cy="13" r="3.5" />
+  </svg>
+);
 
-// Icon mạng xã hội (fill)
-const brandPaths = {
-  facebook: <path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H8v4h2v8h4v-8h3l1-4h-4V8.5a.5.5 0 0 1 .5-.5Z" />,
-  linkedin: (
-    <path d="M4 3a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm-2 6h4v12H2V9Zm7 0h4v1.7c.6-1 2-2 4-2 3.5 0 5 2.2 5 6V21h-4v-5.6c0-1.7-.5-2.9-2-2.9s-3 1-3 3V21H9V9Z" />
-  ),
-  github: (
-    <path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.4-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.2-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.6 9.6 0 0 1 5 0c2-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.8-4.6 5 .4.3.7 1 .7 2v2.9c0 .3.2.6.7.5A10 10 0 0 0 12 2Z" />
-  ),
-};
-
-export default function Icon({ name, className = "size-6", ...props }) {
-  if (brandPaths[name]) {
-    return (
-      <svg
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        aria-hidden="true"
-        className={className}
-        {...props}
-      >
-        {brandPaths[name]}
-      </svg>
-    );
-  }
-
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className={className}
-      {...props}
+// ---- Mạng xã hội (fill) ----
+const brand = (className) => ({
+  viewBox: "0 0 24 24",
+  fill: "currentColor",
+  "aria-hidden": true,
+  className,
+});
+export const Facebook = ({ className = "h-4 w-4" }) => (
+  <svg {...brand(className)}>
+    <path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H8v4h2v8h4v-8h3l1-4h-4V8.5a.5.5 0 0 1 .5-.5Z" />
+  </svg>
+);
+export const Instagram = ({ className = "h-4 w-4" }) => (
+  <svg {...base({ className, strokeWidth: 1.8 })}>
+    <rect x="3" y="3" width="18" height="18" rx="5" />
+    <circle cx="12" cy="12" r="4" />
+    <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" />
+  </svg>
+);
+export const Messenger = ({ className = "h-5 w-5" }) => (
+  <svg {...brand(className)}>
+    <path d="M12 2C6.5 2 2 6.1 2 11.3c0 2.9 1.4 5.5 3.7 7.2V22l3.4-1.9c.9.3 1.9.4 2.9.4 5.5 0 10-4.1 10-9.3S17.5 2 12 2Zm1 12.5-2.6-2.7-5 2.7 5.5-5.8 2.6 2.7 4.9-2.7L13 14.5Z" />
+  </svg>
+);
+export const Zalo = ({ className = "h-5 w-5" }) => (
+  <svg viewBox="0 0 48 48" aria-hidden className={className}>
+    <text
+      x="24"
+      y="31"
+      textAnchor="middle"
+      fontFamily="Arial, Helvetica, sans-serif"
+      fontWeight="700"
+      fontSize="20"
+      fill="currentColor"
     >
-      {paths[name]}
-    </svg>
-  );
-}
+      Zalo
+    </text>
+  </svg>
+);

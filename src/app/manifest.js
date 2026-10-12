@@ -4,11 +4,11 @@ export default function manifest() {
   return {
     name: siteConfig.name,
     short_name: siteConfig.shortName,
-    description: siteConfig.description,
+    description: siteConfig.description.vi,
     start_url: "/",
     display: "standalone",
-    background_color: "#ffffff",
+    background_color: "#f2f2f0",
     theme_color: siteConfig.themeColor,
-    icons: [{ src: "/icon.svg", sizes: "any", type: "image/svg+xml" }],
+    icons: [{ src: "/icon.png", sizes: "512x512", type: "image/png" }],
   };
 }

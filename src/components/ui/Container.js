@@ -1,8 +1,22 @@
-import { cn } from "@/lib/cn";
+import { cn } from "@/lib/utils";
 
-export default function Container({ as: Tag = "div", className, children, ...props }) {
+// wide: khung 1440px cho các section ảnh lớn; mặc định 1200px cho khối chữ
+export default function Container({
+  as: Tag = "div",
+  wide = false,
+  className,
+  children,
+  ...props
+}) {
   return (
-    <Tag className={cn("mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8", className)} {...props}>
+    <Tag
+      className={cn(
+        "mx-auto w-full px-5 sm:px-8 lg:px-16",
+        wide ? "max-w-[1440px]" : "max-w-[1200px]",
+        className,
+      )}
+      {...props}
+    >
       {children}
     </Tag>
   );

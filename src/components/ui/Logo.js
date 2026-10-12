@@ -1,21 +1,23 @@
 import Image from "next/image";
-import Link from "next/link";
-import { siteConfig } from "@/config/site";
-import { cn } from "@/lib/cn";
+import { cn } from "@/lib/utils";
+import { photos } from "@/data/site";
 
-export default function Logo({ className, light = false }) {
+// Logo thật của khách (logo.png tách nền từ logo.jpg, tỉ lệ 790x169).
+// light=true: chuyển sang trắng để đặt trên ảnh/nền tối.
+export default function Logo({ className = "h-8", light = false, preload = false }) {
   return (
-    <Link
-      href="/"
-      className={cn("flex items-center gap-2.5", className)}
-      aria-label={siteConfig.name}
-    >
-      <Image src="/images/brand/logo-mark.svg" alt="" width={36} height={36} />
-      <span
-        className={cn("text-lg font-bold tracking-tight", light ? "text-white" : "text-slate-900")}
-      >
-        {siteConfig.name}
-      </span>
-    </Link>
+    <span className={cn("relative block aspect-[790/169]", className)}>
+      <Image
+        src={photos.logo}
+        alt="Bụt Studio"
+        fill
+        sizes="220px"
+        preload={preload}
+        className={cn(
+          "object-contain transition-[filter] duration-500",
+          light && "brightness-0 invert",
+        )}
+      />
+    </span>
   );
 }

@@ -1,87 +1,136 @@
 import Link from "next/link";
-import { siteConfig } from "@/config/site";
-import { footerLinks } from "@/data/landing";
-import { Container, Icon, Logo } from "@/components/ui";
+import Container from "@/components/ui/Container";
+import Logo from "@/components/ui/Logo";
+import { href } from "@/i18n";
+import { Facebook, Instagram, MapPin, Phone, Clock, Messenger } from "@/components/ui/Icons";
 import CurrentYear from "./CurrentYear";
 
-const socials = [
-  { name: "facebook", label: "Facebook", href: siteConfig.social.facebook },
-  { name: "linkedin", label: "LinkedIn", href: siteConfig.social.linkedin },
-  { name: "github", label: "GitHub", href: siteConfig.social.github },
-];
-
-export default function Footer() {
-  const { contact } = siteConfig;
+// Footer nền tối (ink) — chữ xám sương, có bản đồ Google Maps nhúng (không cần API key).
+export default function Footer({ lang, site, nav, ui, footer }) {
+  const socials = [
+    { Icon: Facebook, href: site.facebook, label: "Facebook" },
+    { Icon: Instagram, href: site.instagram, label: "Instagram" },
+    { Icon: Messenger, href: site.messenger, label: "Messenger" },
+  ];
 
   return (
-    <footer id="contact" className="bg-slate-950 text-slate-400">
-      <Container className="grid gap-12 py-16 lg:grid-cols-12">
-        <div className="lg:col-span-4">
-          <Logo light />
-          <p className="mt-4 max-w-sm text-sm leading-relaxed">{siteConfig.description}</p>
-          <ul className="mt-6 flex gap-3">
-            {socials.map((s) => (
-              <li key={s.name}>
+    <footer data-nav-theme="dark" className="relative overflow-hidden bg-ink text-fog">
+      <div className="pointer-events-none absolute -top-32 -right-24 h-[420px] w-[420px] rounded-full bg-accent/20 blur-[140px]" />
+
+      <Container wide className="relative py-12 lg:py-14">
+        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1.3fr_0.7fr]">
+          {/* Brand */}
+          <div>
+            <Link
+              href={href(lang, "/")}
+              aria-label="Bụt Studio"
+              className="inline-block transition-opacity hover:opacity-80"
+            >
+              <Logo className="h-9" light />
+            </Link>
+            <p className="mt-5 max-w-xs text-justify text-sm leading-relaxed text-fog/70">
+              {footer.blurb}
+            </p>
+            <div className="mt-6 flex gap-2">
+              {socials.map(({ Icon, href: url, label }) => (
                 <a
-                  href={s.href}
+                  key={label}
+                  href={url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={s.label}
-                  className="inline-flex size-10 items-center justify-center rounded-full bg-white/5 text-slate-300 transition-colors hover:bg-brand-600 hover:text-white"
+                  aria-label={label}
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-fog/80 transition hover:border-white hover:bg-white hover:text-ink"
                 >
-                  <Icon name={s.name} className="size-5" />
+                  <Icon className="h-4 w-4" />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Liên hệ */}
+          <div>
+            <h4 className="mb-5 font-serif text-xl text-white">{ui.contact}</h4>
+            <ul className="space-y-4 text-sm text-fog/75">
+              <li className="flex items-start gap-3">
+                <Phone className="mt-0.5 h-4 w-4 shrink-0 text-accent-light" />
+                <a
+                  href={`tel:${site.phoneRaw}`}
+                  className="-my-2 inline-block py-2 transition hover:text-white"
+                >
+                  {site.phone}
                 </a>
               </li>
-            ))}
-          </ul>
-        </div>
+              <li className="flex items-start gap-3">
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-accent-light" />
+                <span>
+                  {site.address}
+                  <br />
+                  <a
+                    href={site.mapsLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="-my-2 inline-block py-2 text-accent-light underline-offset-4 hover:underline"
+                  >
+                    {ui.directions}
+                  </a>
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <Clock className="mt-0.5 h-4 w-4 shrink-0 text-accent-light" />
+                <span>
+                  {site.hours.map((h) => (
+                    <span key={h.time} className="block">
+                      {h.days}: {h.time}
+                    </span>
+                  ))}
+                </span>
+              </li>
+            </ul>
+          </div>
 
-        <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-5">
-          {footerLinks.map((group) => (
-            <div key={group.title}>
-              <h3 className="text-sm font-semibold text-white">{group.title}</h3>
-              <ul className="mt-4 space-y-3 text-sm">
-                {group.links.map((link) => (
-                  <li key={link.label}>
-                    <Link href={link.href} className="transition-colors hover:text-white">
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+          {/* Bản đồ */}
+          <div>
+            <h4 className="mb-5 font-serif text-xl text-white">{ui.map}</h4>
+            <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-soft">
+              <iframe
+                title="Bụt Studio map"
+                src={site.mapsEmbed}
+                className="h-44 w-full grayscale-[35%]"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
             </div>
-          ))}
-        </div>
+          </div>
 
-        <div className="lg:col-span-3">
-          <h3 className="text-sm font-semibold text-white">Liên hệ</h3>
-          <ul className="mt-4 space-y-3 text-sm">
-            <li className="flex items-start gap-3">
-              <Icon name="mail" className="size-5 shrink-0 text-brand-400" />
-              <a href={`mailto:${contact.email}`} className="hover:text-white">
-                {contact.email}
-              </a>
-            </li>
-            <li className="flex items-start gap-3">
-              <Icon name="phone" className="size-5 shrink-0 text-brand-400" />
-              <a href={`tel:${contact.phone.replace(/\s/g, "")}`} className="hover:text-white">
-                {contact.phone}
-              </a>
-            </li>
-            <li className="flex items-start gap-3">
-              <Icon name="mapPin" className="size-5 shrink-0 text-brand-400" />
-              <span>{contact.address}</span>
-            </li>
-          </ul>
+          {/* Menu */}
+          <div>
+            <h4 className="mb-5 font-serif text-xl text-white">{ui.menu}</h4>
+            <ul className="flex flex-wrap gap-x-6 gap-y-1 text-sm text-fog/75 md:block md:space-y-3">
+              {nav.map((i) => (
+                <li key={i.href}>
+                  <Link
+                    href={href(lang, i.href)}
+                    className="inline-block py-2 transition hover:text-white lg:py-1"
+                  >
+                    {i.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </Container>
 
-      <div className="border-t border-white/10">
-        <Container className="flex flex-col items-center justify-between gap-2 py-6 text-xs sm:flex-row">
+      <div className="relative border-t border-white/10">
+        <Container
+          wide
+          className="flex flex-col items-center justify-between gap-3 py-5 text-xs text-fog/50 sm:flex-row"
+        >
           <p>
-            © <CurrentYear /> {siteConfig.name}. All rights reserved.
+            © <CurrentYear /> {site.name}. {footer.rights}
           </p>
-          <p>Made with Next.js & Tailwind CSS</p>
+          <p className="tracking-[0.2em] uppercase">{site.addressShort}</p>
         </Container>
       </div>
     </footer>
