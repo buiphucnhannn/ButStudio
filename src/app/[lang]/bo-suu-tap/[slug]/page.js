@@ -1,30 +1,39 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import Container from "@/components/ui/Container";
 import Pic from "@/components/ui/Pic";
 import AlbumGallery from "@/components/gallery/AlbumGallery";
-import { LOCALES, localize, href, isLocale } from "@/i18n";
+import { LOCALES, localize, href, isLocale, collectionSlugEn, collectionSlugVi } from "@/i18n";
 import { collections, getCollection, countries, styles, ui } from "@/data/site";
 import { ArrowRight } from "@/components/ui/Icons";
 import { noOrphan } from "@/lib/utils";
 
+// Bản tiếng Anh dùng slug tiếng Anh (/en/collections/hanfu); dữ liệu luôn tra theo slug tiếng Việt.
+const toViSlug = (lang, slug) => (lang === "en" ? collectionSlugVi(slug) : slug);
+
 export function generateStaticParams() {
-  return LOCALES.flatMap((lang) => collections.map((c) => ({ lang, slug: c.slug })));
+  return LOCALES.flatMap((lang) =>
+    collections.map((c) => ({ lang, slug: lang === "en" ? collectionSlugEn(c.slug) : c.slug })),
+  );
 }
 
 export async function generateMetadata({ params }) {
   const { lang, slug } = await params;
   if (!isLocale(lang)) return {};
-  const c = getCollection(slug);
+  const viSlug = toViSlug(lang, slug);
+  const c = getCollection(viSlug);
   if (!c) return {};
   const L = localize(c, lang);
   return {
     title: `${L.name} — ${L.concept}`,
     description: L.desc,
     alternates: {
-      canonical: href(lang, `/bo-suu-tap/${slug}`),
-      languages: { vi: `/bo-suu-tap/${slug}`, en: `/en/bo-suu-tap/${slug}` },
+      canonical: href(lang, `/bo-suu-tap/${viSlug}`),
+      languages: {
+        vi: href("vi", `/bo-suu-tap/${viSlug}`),
+        en: href("en", `/bo-suu-tap/${viSlug}`),
+      },
     },
     openGraph: { images: [{ url: c.cover, width: 1200, height: 1500, alt: L.name }] },
   };
@@ -70,9 +79,13 @@ export default function CollectionDetailPage({ params }) {
 }
 
 async function CollectionDetail({ params }) {
-  const { lang, slug } = await params;
+  const { lang, slug: urlSlug } = await params;
+  const slug = toViSlug(lang, urlSlug);
   const raw = getCollection(slug);
   if (!raw) notFound();
+  // URL tiếng Anh còn dùng slug tiếng Việt (link cũ) → chuyển hẳn sang slug tiếng Anh
+  if (lang === "en" && urlSlug !== collectionSlugEn(slug))
+    permanentRedirect(href("en", `/bo-suu-tap/${slug}`));
 
   const idx = collections.findIndex((x) => x.slug === slug);
   const nextRaw = collections[(idx + 1) % collections.length];

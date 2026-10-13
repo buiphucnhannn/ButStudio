@@ -16,7 +16,7 @@ export async function generateMetadata({ params }) {
     description: L.collectionsPage.desc,
     alternates: {
       canonical: href(lang, "/bo-suu-tap"),
-      languages: { vi: "/bo-suu-tap", en: "/en/bo-suu-tap" },
+      languages: { vi: href("vi", "/bo-suu-tap"), en: href("en", "/bo-suu-tap") },
     },
   };
 }

@@ -1,32 +1,37 @@
 import { siteConfig } from "@/config/site";
 import { collections } from "@/data/site";
+import { href } from "@/i18n";
 
 const base = siteConfig.url;
 
+// Mỗi trang 2 bản: tiếng Việt (đường dẫn gốc) & tiếng Anh (đường dẫn tiếng Anh, qua href)
 export default function sitemap() {
-  const entry = (path, priority, changeFrequency = "monthly") => ({
-    url: base + path,
-    lastModified: siteConfig.lastUpdated,
-    changeFrequency,
-    priority,
-    alternates: {
-      languages: {
-        vi: base + path.replace(/^\/en/, "") || base,
-        en: base + (path.startsWith("/en") ? path : `/en${path}`),
+  const pair = (viPath, priority, changeFrequency = "monthly") => {
+    const vi = base + (href("vi", viPath) === "/" ? "" : href("vi", viPath));
+    const en = base + href("en", viPath);
+    const alternates = { languages: { vi, en } };
+    return [
+      {
+        url: vi || base,
+        lastModified: siteConfig.lastUpdated,
+        changeFrequency,
+        priority,
+        alternates,
       },
-    },
-  });
+      {
+        url: en,
+        lastModified: siteConfig.lastUpdated,
+        changeFrequency,
+        priority: priority - 0.1,
+        alternates,
+      },
+    ];
+  };
 
   return [
-    entry("/", 1),
-    entry("/en", 0.9),
-    entry("/bo-suu-tap", 0.9, "weekly"),
-    entry("/en/bo-suu-tap", 0.8, "weekly"),
-    entry("/dich-vu", 0.9),
-    entry("/en/dich-vu", 0.8),
-    ...collections.flatMap((c) => [
-      entry(`/bo-suu-tap/${c.slug}`, 0.8),
-      entry(`/en/bo-suu-tap/${c.slug}`, 0.7),
-    ]),
+    ...pair("/", 1),
+    ...pair("/bo-suu-tap", 0.9, "weekly"),
+    ...pair("/dich-vu", 0.9),
+    ...collections.flatMap((c) => pair(`/bo-suu-tap/${c.slug}`, 0.8)),
   ];
 }

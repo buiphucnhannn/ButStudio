@@ -17,7 +17,7 @@ export async function generateMetadata({ params }) {
     description: meta.desc,
     alternates: {
       canonical: href(lang, "/dich-vu"),
-      languages: { vi: "/dich-vu", en: "/en/dich-vu" },
+      languages: { vi: href("vi", "/dich-vu"), en: href("en", "/dich-vu") },
     },
   };
 }

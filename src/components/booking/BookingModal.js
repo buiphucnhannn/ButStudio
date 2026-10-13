@@ -50,7 +50,7 @@ export default function BookingModal({ booking, collections, site }) {
 
   return (
     <div
-      className="fixed inset-0 z-[150] flex items-center justify-center p-3 sm:p-6"
+      className="fixed inset-0 z-[150] flex items-end justify-center sm:items-center sm:p-6"
       role="dialog"
       aria-modal="true"
       aria-label={booking.title}
@@ -60,7 +60,7 @@ export default function BookingModal({ booking, collections, site }) {
         onClick={close}
       />
 
-      <div className="relative grid max-h-[92svh] w-full max-w-[980px] [animation:popIn_.55s_cubic-bezier(.22,1,.36,1)_both] overflow-hidden rounded-[1.75rem] bg-fog shadow-soft lg:grid-cols-[0.42fr_0.58fr] lg:rounded-[2rem]">
+      <div className="relative grid max-h-[92svh] w-full max-w-[980px] [animation:popIn_.55s_cubic-bezier(.22,1,.36,1)_both] overflow-hidden rounded-t-[1.75rem] bg-fog shadow-soft sm:rounded-[1.75rem] lg:grid-cols-[0.42fr_0.58fr] lg:rounded-[2rem]">
         {/* Cột ảnh (desktop) */}
         <div className="relative hidden lg:block">
           <Pic
@@ -88,18 +88,27 @@ export default function BookingModal({ booking, collections, site }) {
         </div>
 
         {/* Cột form */}
-        <div className="relative no-scrollbar overflow-y-auto overscroll-contain px-5 py-7 sm:px-9 sm:py-8">
+        {/* data-lenis-prevent: cuộn mượt toàn trang (Lenis) không chặn cuộn bên trong popup */}
+        <div
+          data-lenis-prevent
+          className="relative no-scrollbar overflow-y-auto overscroll-contain px-5 pt-3 pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:px-9 sm:py-8"
+        >
+          {/* mobile: thanh kéo của bottom sheet */}
+          <span
+            aria-hidden
+            className="mx-auto mb-4 block h-1 w-10 rounded-full bg-ink/15 sm:hidden"
+          />
           <button
             onClick={close}
             aria-label="Close"
-            className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full text-ink/70 transition hover:bg-ink/5 hover:text-ink"
+            className="absolute top-3 right-3 flex h-10 w-10 items-center justify-center rounded-full text-ink/70 transition hover:bg-ink/5 hover:text-ink sm:top-4 sm:right-4"
           >
             <Close className="h-5 w-5" />
           </button>
 
           <div className="flex flex-col items-center text-center">
-            <Logo className="h-7" />
-            <h3 className="mt-4 font-serif text-[1.9rem] leading-tight text-ink sm:text-[2.2rem]">
+            <Logo className="h-6 sm:h-7" />
+            <h3 className="mt-3 font-serif text-[1.65rem] leading-tight text-ink sm:mt-4 sm:text-[2.2rem]">
               {booking.title}
             </h3>
             <p className="mt-2 max-w-sm text-[13.5px] leading-relaxed text-balance text-ink-soft">
@@ -107,7 +116,7 @@ export default function BookingModal({ booking, collections, site }) {
             </p>
           </div>
 
-          <div className="mt-6">
+          <div className="mt-5 sm:mt-6">
             <BookingForm booking={booking} collections={collections} site={site} preset={preset} />
           </div>
 

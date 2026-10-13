@@ -71,7 +71,7 @@ export default function BookingForm({ booking, collections, site, preset }) {
           onChange={set("phone")}
         />
       </div>
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid grid-cols-[1.4fr_1fr] gap-3 sm:grid-cols-2">
         <label className="relative block">
           <span className="absolute top-1.5 left-4 text-[11px] tracking-wider text-ink-muted uppercase lg:text-[10px]">
             {f.date}
@@ -105,23 +105,23 @@ export default function BookingForm({ booking, collections, site, preset }) {
         </select>
       </label>
       <textarea
-        className="min-h-[88px] field resize-none"
+        className="min-h-[72px] field resize-none sm:min-h-[88px]"
         placeholder={f.note}
         value={form.note}
         onChange={set("note")}
       />
 
-      <div className="flex flex-col gap-2 pt-1 sm:flex-row">
+      <div className="flex gap-2 pt-1">
         <button
           type="submit"
-          className="inline-flex flex-1 items-center justify-center rounded-full border border-ink/20 px-6 py-3 text-sm font-medium text-ink transition hover:border-ink hover:bg-ink hover:text-white"
+          className="inline-flex flex-1 items-center justify-center rounded-full border border-ink/20 px-3 py-3 text-[13px] font-medium whitespace-nowrap text-ink transition hover:border-ink hover:bg-ink hover:text-white sm:px-6 sm:text-sm"
         >
           {f.submit}
         </button>
         <button
           type="button"
           onClick={() => handleSend("zalo")}
-          className="inline-flex flex-1 items-center justify-center rounded-full border border-ink/20 px-6 py-3 text-sm font-medium text-ink transition hover:border-ink hover:bg-ink hover:text-white"
+          className="inline-flex flex-1 items-center justify-center rounded-full border border-ink/20 px-3 py-3 text-[13px] font-medium whitespace-nowrap text-ink transition hover:border-ink hover:bg-ink hover:text-white sm:px-6 sm:text-sm"
         >
           {f.submitZalo}
         </button>

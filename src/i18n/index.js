@@ -3,6 +3,10 @@
  * - Chuỗi trong data viết dạng { vi: "...", en: "..." }; localize(data, lang) duyệt sâu và chọn ngôn ngữ.
  * - URL: tiếng Việt tại "/", tiếng Anh tại "/en" (xem rewrites trong next.config.mjs).
  */
+import { toEnPath, toViPath } from "./routes";
+
+export { collectionSlugEn, collectionSlugVi } from "./routes";
+
 export const LOCALES = ["vi", "en"];
 export const DEFAULT_LOCALE = "vi";
 
@@ -29,18 +33,20 @@ export function localize(data, lang) {
   return data;
 }
 
-// href("en", "/bo-suu-tap") => "/en/bo-suu-tap"; href("vi", "/#about") => "/#about"
+// Luôn truyền đường dẫn TIẾNG VIỆT; bản tiếng Anh tự dịch đường dẫn & slug (xem ./routes.js):
+// href("en", "/bo-suu-tap/han-phuc") => "/en/collections/hanfu"; href("vi", "/#about") => "/#about"
 export function href(lang, path = "/") {
   if (lang === DEFAULT_LOCALE) return path;
   if (path === "/") return "/en";
   if (path.startsWith("/#")) return `/en${path.slice(1)}`;
-  return `/en${path}`;
+  return `/en${toEnPath(path)}`;
 }
 
-// Đổi ngôn ngữ nhưng giữ nguyên trang đang xem
+// Đổi ngôn ngữ nhưng giữ nguyên trang đang xem (dịch cả đường dẫn & slug)
 export function switchLocalePath(pathname, target) {
+  const isEn = /^\/en(\/|$)/.test(pathname);
   const stripped = pathname.replace(/^\/en(?=\/|$)/, "") || "/";
-  return href(target, stripped);
+  return href(target, isEn ? toViPath(stripped) : stripped);
 }
 
 export function localeFromPath(pathname) {
