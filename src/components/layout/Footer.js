@@ -104,9 +104,10 @@ export default function Footer({ lang, site, nav, ui, footer }) {
           </div>
 
           {/* Menu */}
-          <div>
+          {/* mobile: căn giữa (tiêu đề + các mục nằm ngang); từ md căn trái, xếp dọc như cũ */}
+          <div className="text-center md:text-left">
             <h4 className="mb-5 font-serif text-xl text-white">{ui.menu}</h4>
-            <ul className="flex flex-wrap gap-x-6 gap-y-1 text-sm text-fog/75 md:block md:space-y-3">
+            <ul className="flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm text-fog/75 md:block md:space-y-3">
               {nav.map((i) => (
                 <li key={i.href}>
                   <Link

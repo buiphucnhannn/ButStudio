@@ -167,10 +167,11 @@ export default function Hero({ hero, ui, exploreHref }) {
         >
           <Link
             href={exploreHref}
-            className="group inline-flex items-center justify-between gap-3 rounded-full bg-white py-1.5 pr-1.5 pl-6 text-sm font-medium text-ink transition hover:bg-fog-100 sm:justify-start"
+            className="group relative inline-flex h-12 items-center justify-center rounded-full bg-white px-14 text-sm font-medium text-ink transition hover:bg-fog-100 sm:h-auto sm:justify-start sm:gap-3 sm:py-1.5 sm:pr-1.5 sm:pl-6"
           >
             {ui.explore}
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-ink text-white transition-transform group-hover:translate-x-0.5">
+            {/* mobile: chữ căn giữa nút, vòng mũi tên neo mép phải; từ sm nằm cạnh chữ như cũ */}
+            <span className="absolute right-1.5 flex h-9 w-9 items-center justify-center rounded-full bg-ink text-white transition-transform group-hover:translate-x-0.5 sm:static">
               <ArrowRight className="h-4 w-4" />
             </span>
           </Link>

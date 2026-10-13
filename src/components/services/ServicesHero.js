@@ -26,7 +26,7 @@ export default function ServicesHero({ hero, ui }) {
       />
       <Watermark
         text="Services"
-        className="absolute top-20 right-3 -z-10 text-[5rem] text-ink/[0.05] sm:top-24 lg:top-auto lg:right-auto lg:bottom-4 lg:left-8 lg:text-[16rem]"
+        className="absolute top-24 right-3 -z-10 text-[5rem] text-ink/[0.05] sm:top-28 lg:top-auto lg:right-auto lg:bottom-4 lg:left-8 lg:text-[16rem]"
       />
       <Container wide>
         <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-16">

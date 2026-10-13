@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, Check } from "@/components/ui/Icons";
+import { Check } from "@/components/ui/Icons";
 import { cn } from "@/lib/utils";
 
 /**
@@ -114,12 +114,9 @@ export default function BookingForm({ booking, collections, site, preset }) {
       <div className="flex flex-col gap-2 pt-1 sm:flex-row">
         <button
           type="submit"
-          className="group inline-flex flex-1 items-center justify-center gap-3 rounded-full bg-ink py-1.5 pr-1.5 pl-6 text-sm font-medium text-white transition hover:bg-graphite"
+          className="inline-flex flex-1 items-center justify-center rounded-full border border-ink/20 px-6 py-3 text-sm font-medium text-ink transition hover:border-ink hover:bg-ink hover:text-white"
         >
           {f.submit}
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-ink transition-transform group-hover:translate-x-0.5">
-            <ArrowRight className="h-4 w-4" />
-          </span>
         </button>
         <button
           type="button"
