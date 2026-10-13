@@ -5,14 +5,14 @@ import { usePathname, useRouter } from "next/navigation";
 
 /**
  * Chuyển trang mượt (không chớp trắng):
- * - Bấm link nội bộ sang trang KHÁC: nội dung hiện tại mờ dần + trôi nhẹ lên (~380ms) rồi mới điều hướng;
+ * - Bấm link nội bộ sang trang KHÁC: nội dung hiện tại mờ dần + trôi nhẹ lên (~0.2s) rồi mới điều hướng;
  *   trang mới hiện lên từ dưới (class .page-enter trên <main>, CSS trong globals.css).
  * - Link cùng trang có #section: để SmoothScroll cuộn êm. Link cùng trang không # (logo…): cuộn êm lên đầu.
  * - Link #section sang trang khác (vd. "/#about" từ trang Dịch vụ): chuyển trang mượt, SmoothScroll cuộn tới section.
  * - Bỏ qua: tab mới, tải file, mailto/tel, link ngoài, link đổi ngôn ngữ (hreflang — cố ý tải lại trang).
  * Đăng ký ở pha CAPTURE để chạy trước handler của <Link> (Next bỏ qua điều hướng khi đã preventDefault).
  */
-const LEAVE_MS = 380;
+const LEAVE_MS = 160; // điều hướng ngay khi nội dung đang mờ (không chờ mờ hẳn) → chuyển nhanh, không khựng
 const easeOutExpo = (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
 
 export default function PageTransition() {
@@ -25,7 +25,7 @@ export default function PageTransition() {
     if (!main) return;
     main.classList.remove("page-leave");
     main.classList.add("page-enter");
-    const t = setTimeout(() => main.classList.remove("page-enter"), 900);
+    const t = setTimeout(() => main.classList.remove("page-enter"), 500);
     return () => clearTimeout(t);
   }, [pathname]);
 

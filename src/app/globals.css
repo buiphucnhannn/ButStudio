@@ -381,21 +381,21 @@ html.lenis body {
    (xám sương), không chớp trắng. Chỉ có transform trong lúc chuyển → không ảnh hưởng sticky/fixed bên trong. */
 main {
   transition:
-    opacity 0.38s var(--ease-out-expo),
-    transform 0.38s var(--ease-out-expo);
+    opacity 0.2s var(--ease-out-expo),
+    transform 0.2s var(--ease-out-expo);
 }
 main.page-leave {
   opacity: 0;
-  transform: translateY(-14px);
+  transform: translateY(-8px);
   pointer-events: none;
 }
 main.page-enter {
-  animation: pageIn 0.8s var(--ease-out-expo) both;
+  animation: pageIn 0.45s var(--ease-out-expo) both;
 }
 @keyframes pageIn {
   from {
     opacity: 0;
-    transform: translateY(22px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
