@@ -81,7 +81,25 @@ export default function useReveal() {
       },
       { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
     );
-    els.forEach((el) => io.observe(el));
+    const watched = new WeakSet();
+    const watch = (el) => {
+      if (el.__revealed || watched.has(el)) return;
+      watched.add(el);
+      io.observe(el);
+    };
+    els.forEach(watch);
+
+    // Nội dung tải sau (Suspense/streaming khi chuyển trang, vd. trang chi tiết album) được chèn vào DOM
+    // SAU lần quét ở trên → theo dõi DOM để bắt cả các .reveal mới, nếu không chúng kẹt ở trạng thái ẩn.
+    const mo = new MutationObserver((records) => {
+      for (const r of records)
+        for (const node of r.addedNodes) {
+          if (node.nodeType !== 1) continue;
+          if (node.matches(SELECTOR)) watch(node);
+          node.querySelectorAll(SELECTOR).forEach(watch);
+        }
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
 
     // Phần tử vốn display:none (bố cục dự phòng) có thể hiện ra khi resize mà observer chưa báo → quét tay
     let t;
@@ -103,6 +121,7 @@ export default function useReveal() {
     return () => {
       window.removeEventListener("resize", onResize);
       clearTimeout(t);
+      mo.disconnect();
       io.disconnect();
     };
   }, [pathname]);
