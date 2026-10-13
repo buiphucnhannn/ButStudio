@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn, lockScroll } from "@/lib/utils";
-import { href, switchLocalePath } from "@/i18n";
+import { href, toCanonicalPath } from "@/i18n";
 import { ArrowRight, Close } from "@/components/ui/Icons";
 import Logo from "@/components/ui/Logo";
 
@@ -17,7 +17,10 @@ export default function Navbar({ lang, nav, ui, phone, phoneRaw }) {
   // Menu mobile: lưu kèm pathname lúc mở → đổi trang là tự đóng (không cần setState trong effect)
   const [menu, setMenu] = useState({ open: false, path: "" });
   const [onDark, setOnDark] = useState(false);
-  const pathname = usePathname();
+  // Đường dẫn trang hiện tại quy về dạng TIẾNG VIỆT (vd. "/bo-suu-tap/han-phuc") cho mọi ngôn ngữ:
+  // lúc prerender usePathname() trả đường dẫn nội bộ sau rewrite ("/vi/x", "/en/dich-vu"), trên trình duyệt
+  // trả URL thật ("/x", "/en/services") → chuẩn hoá để server & client khớp nhau (tránh link sai, lệch hydration).
+  const pathname = toCanonicalPath(usePathname());
   const open = menu.open && menu.path === pathname;
   const setOpen = (v) =>
     setMenu((m) => ({
@@ -25,7 +28,7 @@ export default function Navbar({ lang, nav, ui, phone, phoneRaw }) {
       path: pathname,
     }));
   const homePath = href(lang, "/");
-  const isHome = pathname === homePath || pathname === homePath + "/";
+  const isHome = pathname === "/";
 
   // Dò section nằm sau header: phần tử data-nav-theme="dark" phủ qua tâm header → kính tối chữ trắng
   useEffect(() => {
@@ -66,11 +69,11 @@ export default function Navbar({ lang, nav, ui, phone, phoneRaw }) {
     if (path === "/") return isHome;
     const clean = path.split("#")[0];
     if (!clean || clean === "/") return false;
-    return pathname.startsWith(href(lang, clean));
+    return pathname.startsWith(clean);
   };
 
   const otherLang = lang === "vi" ? "en" : "vi";
-  const langHref = switchLocalePath(pathname, otherLang);
+  const langHref = href(otherLang, pathname);
 
   return (
     <header className="fixed inset-x-3 top-3 z-50 sm:inset-x-5 sm:top-5">
@@ -115,8 +118,9 @@ export default function Navbar({ lang, nav, ui, phone, phoneRaw }) {
         </nav>
 
         <div className="flex items-center gap-1.5 sm:gap-2">
-          {/* Đổi ngôn ngữ */}
-          <Link
+          {/* Đổi ngôn ngữ: thẻ <a> thường (tải lại trang) — đổi ngôn ngữ là đổi cả layout gốc (html lang, metadata);
+              chuyển trang kiểu client giữ trạng thái router của ngôn ngữ cũ → prefetch trang mới bị 404 */}
+          <a
             href={langHref}
             hrefLang={otherLang}
             aria-label={otherLang === "en" ? "Switch to English" : "Chuyển sang tiếng Việt"}
@@ -130,7 +134,7 @@ export default function Navbar({ lang, nav, ui, phone, phoneRaw }) {
             <span className={lang === "vi" ? "opacity-100" : "opacity-40"}>VI</span>
             <span className="opacity-30">/</span>
             <span className={lang === "en" ? "opacity-100" : "opacity-40"}>EN</span>
-          </Link>
+          </a>
 
           <button
             type="button"

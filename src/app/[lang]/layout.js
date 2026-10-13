@@ -10,6 +10,7 @@ import Reveal from "@/components/ui/Reveal";
 import SmoothScroll from "@/components/fx/SmoothScroll";
 import ScrollTop from "@/components/fx/ScrollTop";
 import Preloader from "@/components/fx/Preloader";
+import PageTransition from "@/components/fx/PageTransition";
 import BookingModal from "@/components/booking/BookingModal";
 import "../globals.css";
 
@@ -117,6 +118,7 @@ export default async function RootLayout({ children, params }) {
           caption={lang === "vi" ? "Trang phục truyền thống · Đà Nẵng" : "World costumes · Da Nang"}
         />
         <SmoothScroll />
+        <PageTransition />
         <Reveal />
         <Navbar lang={lang} nav={L.nav} ui={L.ui} phone={site.phone} phoneRaw={site.phoneRaw} />
         <main>{children}</main>

@@ -5,9 +5,12 @@ import Logo from "@/components/ui/Logo";
 import { cn } from "@/lib/utils";
 
 /**
- * Màn chào khi tải trang: nền xám + logo hiện dần + vạch nạp mảnh, rồi tấm màn kéo lên.
+ * Màn chào khi TẢI TRANG (lần đầu vào, F5, mở link mới): nền xám + logo + vạch nạp, rồi tấm màn kéo lên.
+ * Nằm trong layout gốc → chuyển trang bên trong site (client navigation) không chạy lại; giữa các trang
+ * là hiệu ứng mờ/trôi nhẹ của PageTransition.
+ *
  * Khi màn bắt đầu kéo lên: phát sự kiện "but:ready" + class is-ready trên <html>
- * để hero bắt đầu hiệu ứng mở màn đúng lúc.
+ * để Hero chạy hiệu ứng mở màn đúng lúc.
  */
 const SHOW_MS = 1200;
 const LEAVE_MS = 900;

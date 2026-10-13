@@ -375,3 +375,36 @@ html.lenis body {
     text-wrap: pretty;
   }
 }
+
+/* ---------- Chuyển trang (PageTransition) ----------
+   Rời trang: nội dung mờ dần + trôi nhẹ lên; vào trang mới: hiện lên từ dưới. Nền giữa 2 trang là màu body
+   (xám sương), không chớp trắng. Chỉ có transform trong lúc chuyển → không ảnh hưởng sticky/fixed bên trong. */
+main {
+  transition:
+    opacity 0.38s var(--ease-out-expo),
+    transform 0.38s var(--ease-out-expo);
+}
+main.page-leave {
+  opacity: 0;
+  transform: translateY(-14px);
+  pointer-events: none;
+}
+main.page-enter {
+  animation: pageIn 0.8s var(--ease-out-expo) both;
+}
+@keyframes pageIn {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  main.page-leave,
+  main.page-enter {
+    transform: none;
+  }
+}

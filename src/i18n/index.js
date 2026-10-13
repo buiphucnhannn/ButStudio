@@ -42,11 +42,16 @@ export function href(lang, path = "/") {
   return `/en${toEnPath(path)}`;
 }
 
+// Đường dẫn bất kỳ (URL thật hoặc nội bộ sau rewrite, cả /vi/... & /en/...) → dạng tiếng Việt không tiền tố:
+// "/en/collections/hanfu" | "/en/bo-suu-tap/hanfu" | "/vi/bo-suu-tap/han-phuc" → "/bo-suu-tap/han-phuc"
+export function toCanonicalPath(pathname = "/") {
+  if (/^\/en(\/|$)/.test(pathname)) return toViPath(pathname.replace(/^\/en/, "") || "/");
+  return pathname.replace(/^\/vi(?=\/|$)/, "") || "/";
+}
+
 // Đổi ngôn ngữ nhưng giữ nguyên trang đang xem (dịch cả đường dẫn & slug)
 export function switchLocalePath(pathname, target) {
-  const isEn = /^\/en(\/|$)/.test(pathname);
-  const stripped = pathname.replace(/^\/en(?=\/|$)/, "") || "/";
-  return href(target, isEn ? toViPath(stripped) : stripped);
+  return href(target, toCanonicalPath(pathname));
 }
 
 export function localeFromPath(pathname) {
